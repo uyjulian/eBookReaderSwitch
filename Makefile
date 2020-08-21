@@ -68,13 +68,13 @@ CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions #-DDEBUG=1 -DEXPERIMENTAL=1
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
-LIBS    :=  -lstdc++fs -lSDL2_ttf -lSDL2_image -lpng -ljpeg `sdl2-config --libs` -lfreetype -lwebp -lz -lbz2 -ltwili -lconfig -lnx -lmupdf -lmupdf-third #-lmupdf_core -lmupdf_thirdparty
+LIBS    :=  -lstdc++fs -lSDL2_ttf -lSDL2_image -lpng -ljpeg `sdl2-config --libs` -lfreetype -lwebp -lz -lbz2 -lconfig -lnx -lmupdf -lmupdf-third
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= $(PORTLIBS) $(LIBNX) $(CURDIR)/mupdf
+LIBDIRS	:= $(PORTLIBS) $(LIBNX)
 
 #---------------------------------------------------------------------------------
 # no real need to edit anything past this point unless you need to add additional
@@ -163,7 +163,7 @@ ifneq ($(ROMFS),)
 	export NROFLAGS += --romfsdir=$(CURDIR)/$(ROMFS)
 endif
 
-.PHONY: $(BUILD) clean all mupdf
+.PHONY: $(BUILD) clean all
 
 #---------------------------------------------------------------------------------
 all: $(BUILD)
@@ -180,17 +180,6 @@ ifeq ($(strip $(APP_JSON)),)
 else
 	@rm -fr $(BUILD) $(TARGET).nsp $(TARGET).nso $(TARGET).npdm $(TARGET).elf
 endif
-
-#---------------------------------------------------------------------------------
-mupdf-clean:
-	@echo cleaning mupdf ...
-	@$(MAKE) -C $(CURDIR)/mupdf clean
-
-#---------------------------------------------------------------------------------
-mupdf:
-	@$(MAKE) -f $(CURDIR)/Makefile.mupdf
-
-#---------------------------------------------------------------------------------
 else
 .PHONY:	all
 
